@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client, S3 } from '@aws-sdk/client-s3'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createLogger } from '../utils/logger.mjs'
 import AWSXRay from 'aws-xray-sdk-core'
@@ -10,20 +10,20 @@ const bucketName = process.env.ATTACHMENT_S3_BUCKET
 const urlExpiration = parseInt(process.env.SIGNED_URL_EXPIRATION)
 
 export async function getUploadUrl(fileId) {
-
+    
     const command = new PutObjectCommand({
-        Bucket: bucketName,
-        Key: fileId
+      Bucket: bucketName,
+      Key: fileId
     })
 
     const uploadFileUrl = await getSignedUrl(s3Client, command, {
-        expiresIn: urlExpiration
+      expiresIn: urlExpiration
     })
-
-    logger.info(`Obtained an uploadUrl = ${uploadFileUrl}`, { function: "getUploadUrl()" })
+    
+    logger.info(`Obtained an uploadUrl = ${uploadFileUrl}`, {function: "getUploadUrl()"} )
     return uploadFileUrl
 }
 
-export async function getAttachmentUrl(fileId) {
+export function getAttachmentUrl(fileId) {
     return `https://${bucketName}.s3.amazonaws.com/${fileId}`
 }

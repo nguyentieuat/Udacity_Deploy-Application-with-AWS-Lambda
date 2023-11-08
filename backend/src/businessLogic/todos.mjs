@@ -21,12 +21,11 @@ export async function createTodo(createTodoRequest, userId) {
   
   /* createdAt */
   const createdAt = new Date().toISOString()
-  const s3AttachmentUrl = getAttachmentUrl(todoId);
 
   return await todoAccess.createTodo({
     todoId: todoId,
     userId: userId,
-    attachmentUrl: s3AttachmentUrl,
+    attachmentUrl: "",
     createdAt: createdAt,
     done: false,
     ...createTodoRequest

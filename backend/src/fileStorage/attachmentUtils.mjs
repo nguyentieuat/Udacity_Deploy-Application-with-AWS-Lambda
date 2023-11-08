@@ -25,23 +25,5 @@ export async function getUploadUrl(fileId) {
 }
 
 export async function getAttachmentUrl(fileId) {
-    const exists = await S3
-        .headObject({
-            Bucket: bucketName,
-            Key: fileId,
-        })
-        .promise()
-        .then(
-            () => true,
-            err => {
-                if (err.code === 'NotFound') {
-                    return false;
-                }
-                throw err;
-            }
-        );
-    if (!exists) {
-        return null;
-    }
     return `https://${bucketName}.s3.amazonaws.com/${fileId}`
 }
